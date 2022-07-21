@@ -17,13 +17,7 @@ public class Coin : MonoBehaviour
 
     private void OnEnable()
     {
-        _magnet.CollidedWithPlayer += OnCollisionWithPlayer;
         _magnet.enabled = false;
-    }
-
-    private void OnDisable()
-    {
-        _magnet.CollidedWithPlayer -= OnCollisionWithPlayer;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,6 +34,10 @@ public class Coin : MonoBehaviour
         {
             OnCollisionWithGround();
         }
+        else if(collision.gameObject.TryGetComponent<Player>(out Player player))
+        {
+            OnCollisionWithPlayer(player);
+        }
     }
 
     public void LaunchProjectileFlightAfterCreation(Vector3 target)
@@ -55,7 +53,7 @@ public class Coin : MonoBehaviour
     private void OnPlayerEnteredTrigger(Player player)
     {
         _magnet.enabled = true;
-        _magnet.StartFlight(player, _rigidBody);
+        _magnet.StartFlight(player.TakeCoinPosition, _rigidBody);
     }
 
     private void OnCollisionWithPlayer(Player player)

@@ -12,8 +12,7 @@ public class HealingSpot : MonoBehaviour
 
     private void Start()
     {
-        if (_amountToHeal <= 0)
-            throw new System.Exception("Wrong argument");
+        _amountToHeal = Mathf.Clamp(_amountToHeal, 1, int.MaxValue);
 
         _timeCount = _healingRate;
     }
@@ -56,20 +55,8 @@ public class HealingSpot : MonoBehaviour
 
     private void TryAddHealthToList(Health health)
     {
-        bool canBeAdded = true;
-
-        foreach (var healthToHeal in _healthToHeal)
-        {
-            if (health == healthToHeal)
-            {
-                canBeAdded = false;
-            }
-        }
-
-        if (canBeAdded == true)
-        {
+        if (_healthToHeal.Contains(health) == false)
             _healthToHeal.Add(health);
-        }
     }
 
     private void TryHeal(List<Health> health, int amountToHeal)

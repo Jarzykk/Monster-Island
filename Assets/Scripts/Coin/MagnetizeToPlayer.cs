@@ -7,39 +7,17 @@ public class MagnetizeToPlayer : MonoBehaviour
 {
     [SerializeField] private float _speed;
 
-    private Player _player;
-    private Rigidbody _rigidBody;
-    private bool _canFly = false;
-
-    public event UnityAction<Player> CollidedWithPlayer;
-
-    private void Update()
+    public void StartFlight(Transform targetTransform, Rigidbody rigidBody)
     {
-        if(_canFly)
+        StartCoroutine(FlyToTarget(targetTransform));
+    }
+
+    private IEnumerator FlyToTarget(Transform targetPosition)
+    {
+        while(transform.position != targetPosition.position)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _player.TakeCoinPosition.position, _speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition.position, _speed * Time.deltaTime);
+            yield return null;
         }
-    }
-
-    public void StartFlight(Player player, Rigidbody rigidBody)
-    {
-        _rigidBody = rigidBody;
-        _player = player;
-        _canFly = true;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.TryGetComponent<Player>(out Player player))
-        {
-            OnCollisionWithPlayer(player);
-        }
-    }
-
-    private void OnCollisionWithPlayer(Player player)
-    {
-        CollidedWithPlayer?.Invoke(player);
-        _canFly = false;
-        this.enabled = false;
     }
 }

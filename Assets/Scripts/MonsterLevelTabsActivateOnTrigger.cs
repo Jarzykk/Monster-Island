@@ -6,9 +6,9 @@ public class MonsterLevelTabsActivateOnTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponentInChildren<LevelTabsEnabler>())
-        {
-            other.GetComponentInChildren<LevelTabsEnabler>().EnableLevelTabs();
-        }
+        LevelTabsEnabler enabler = other.GetComponentInChildren(typeof(LevelTabsEnabler), true) as LevelTabsEnabler;
+
+        if (enabler != null)
+            enabler.EnableLevelTabs();
     }
 }

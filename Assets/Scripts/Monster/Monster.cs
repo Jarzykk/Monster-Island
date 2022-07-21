@@ -11,12 +11,13 @@ public abstract class Monster : MonoBehaviour, IDamageble
     [SerializeField] private int _experienceForKilling;
 
     private Health _health;
-    private int _currentLevel;
 
     public int ExperienceForKilling => _experienceForKilling;
     public Monster CurrentTarget => _targetSystem.Target;
     public int CurrentHealth => _health.CurrentHealth;
 
+    public event UnityAction StartedMovement;
+    public event UnityAction StopedMovement;
     public event UnityAction EnteredBattleState;
     public event UnityAction LeftBattleState;
     public event UnityAction Died;
@@ -43,6 +44,16 @@ public abstract class Monster : MonoBehaviour, IDamageble
     public void DealDamage(Health opponent)
     {
         opponent.TakeDamage(_damage);
+    }
+
+    public void LauchStartedMovementEvent()
+    {
+        StartedMovement?.Invoke();
+    }
+
+    public void LaunchStopedMovementEvent()
+    {
+        StopedMovement?.Invoke();
     }
 
     public Health GetHealth()

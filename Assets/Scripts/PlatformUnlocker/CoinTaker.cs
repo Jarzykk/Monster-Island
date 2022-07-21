@@ -19,30 +19,27 @@ public class CoinTaker : MonoBehaviour
         _coinsTaken = 0;
     }
 
-    private void OnTriggerStay(Collider other)
-    {        
-        if(other.TryGetComponent<Wallet>(out Wallet wallet))
-        {
-            if (_takeCoinAllowed == true && _coinsTaken < _platformUnlocker.CoinPriceToUnlock)
-            {
-                bool coinTaken = wallet.TryPayCoin(_coinLaunchPosition.position, _coinReciever.CoinRecievePosition.transform.position);
-                if(coinTaken == true)
-                {
-                    _coinsTaken++;
-                    _takeCoinAllowed = false;
-                }
-            }
-        }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<Wallet>(out Wallet wallet))
+            StartCoroutine(TryTakeCoinInInterval(wallet, _delayBetweenTakeCoin));
     }
 
-    private void Update()
+    private void OnTriggerExit(Collider other)
     {
-        _timeCount += Time.deltaTime;
+        if (other.TryGetComponent<Wallet>(out Wallet wallet))
+            StopCoroutine(TryTakeCoinInInterval(wallet, _delayBetweenTakeCoin));
+    }
 
-        if (_timeCount >= _delayBetweenTakeCoin)
-        {            
-            _takeCoinAllowed = true;
-            _timeCount = 0;
-        }        
+    private IEnumerator TryTakeCoinInInterval(Wallet wallet, float intervalToTakeCoin)
+    {
+        while (_coinsTaken < _platformUnlocker.CoinPriceToUnlock)
+        {
+            bool coinTaken = wallet.TryPayCoin(_coinLaunchPosition.position, _coinReciever.CoinRecievePosition.transform.position);
+            if (coinTaken == true)
+                _coinsTaken++;
+
+            yield return new WaitForSeconds(intervalToTakeCoin);
+        }
     }
 }

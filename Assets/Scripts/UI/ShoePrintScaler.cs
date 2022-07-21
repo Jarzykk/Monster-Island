@@ -9,35 +9,30 @@ public class ShoePrintScaler : MonoBehaviour
     [SerializeField] private Vector3 _targetMinScale;
     [SerializeField] private float _duration;
 
-    private float _durationRunningTime;
-    private bool _scaleIncreasing = true;
-
-    private void FixedUpdate()
+    private void OnEnable()
     {
-        if(_shoeSprite.transform.localScale == _targetMaxScale && _scaleIncreasing == true)
-        {
-            OnTargetScaleReached();
-        }
-        else if(_shoeSprite.transform.localScale == _targetMinScale && _scaleIncreasing == false)
-        {
-            OnTargetScaleReached();
-        }
-
-        if(_scaleIncreasing)
-        {
-            _shoeSprite.transform.localScale = Vector3.Lerp(_targetMinScale, _targetMaxScale, _durationRunningTime / _duration);            
-        }
-        else
-        {
-            _shoeSprite.transform.localScale = Vector3.Lerp(_targetMaxScale, _targetMinScale, _durationRunningTime / _duration);
-        }
-
-        _durationRunningTime += Time.deltaTime;
+        _shoeSprite.transform.localScale = _targetMinScale;
+        StartCoroutine(ScaleLoop());
     }
 
-    private void OnTargetScaleReached()
+    private IEnumerator ScaleLoop()
     {
-        _scaleIncreasing = !_scaleIncreasing;
-        _durationRunningTime = 0;
+        while (true)
+        {
+            yield return ScaleTo(_targetMaxScale);
+            yield return ScaleTo(_targetMinScale);
+        }
+    }
+
+    private IEnumerator ScaleTo(Vector3 scale)
+    {
+        float durationRunningTime = 0;
+
+        while (_shoeSprite.transform.localScale != scale)
+        {
+            _shoeSprite.transform.localScale = Vector3.Lerp(_shoeSprite.transform.localScale, scale, durationRunningTime / _duration);
+            durationRunningTime += Time.deltaTime;
+            yield return null;
+        }
     }
 }

@@ -8,7 +8,7 @@ public class TamingPanel : MonoBehaviour
     [SerializeField] private ParticleSystem _particleEffect;
     [SerializeField] private Transform _minionUiPosition;
     [SerializeField] private Vector3 _minionUiScale;
-    [SerializeField] private int _uiLayerNumber;
+    [SerializeField] private string _uiLayerName;
     [SerializeField] private TMP_Text _minionsName;
 
     private Minion _minionToTame;
@@ -38,7 +38,7 @@ public class TamingPanel : MonoBehaviour
     {
         _minionToTame = Instantiate(minion, _minionUiPosition);
         _minionToTame.DisableComponentsForUI();
-        SetMinionsLayersToUi(_minionToTame, _uiLayerNumber);
+        SetMinionsLayersToUi(_minionToTame, _uiLayerName);
         _minionToTame.transform.localScale = _minionUiScale;
         _animations = minion.GetComponent<MonsterAnimations>();
     }
@@ -48,11 +48,11 @@ public class TamingPanel : MonoBehaviour
         _minionsName.text = name;
     }
 
-    private void SetMinionsLayersToUi(Minion minion, int layerNumber)
+    private void SetMinionsLayersToUi(Minion minion, string layername)
     {
         foreach (Transform childObject in minion.GetComponentsInChildren<Transform>(true))
         {
-            childObject.gameObject.layer = layerNumber;
+            childObject.gameObject.layer = LayerMask.NameToLayer(layername);
         }
     }
 }

@@ -20,18 +20,9 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator Spawn()
     {
-        float timeCount = 0;
+        yield return new WaitForSeconds(_delayBeforeSpawn);
 
-        while(timeCount < _delayBeforeSpawn)
-        {
-            timeCount += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-
-        if (_enemyToSpawn.GetComponent<Enemy>())
-        {
-            _enemySpawned = Instantiate(_enemyToSpawn, _spawnPosition.position, Quaternion.identity);
-            EnemyHasBeenSpawned?.Invoke(_enemySpawned);
-        }            
+        _enemySpawned = Instantiate(_enemyToSpawn, _spawnPosition.position, Quaternion.identity);
+        EnemyHasBeenSpawned?.Invoke(_enemySpawned);
     }
 }

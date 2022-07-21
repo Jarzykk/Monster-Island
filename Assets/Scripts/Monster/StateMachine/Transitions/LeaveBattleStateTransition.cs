@@ -11,14 +11,6 @@ public class LeaveBattleStateTransition : Transition
 
     public event UnityAction LeftBattleState;
 
-    private void OnEnable()
-    {
-        NeedTransit = false;
-        _monster = GetComponent<Monster>();
-        _target = _monster.CurrentTarget;
-        _target.Died += OnEnemyDeath;
-    }
-
     private void OnDisable()
     {
         _target.Died -= OnEnemyDeath;
@@ -28,5 +20,13 @@ public class LeaveBattleStateTransition : Transition
     {
         LeftBattleState?.Invoke();
         NeedTransit = true;
+    }
+
+    protected override void Enabled()
+    {
+        base.Enabled();
+        _monster = GetComponent<Monster>();
+        _target = _monster.CurrentTarget;
+        _target.Died += OnEnemyDeath;
     }
 }

@@ -9,9 +9,15 @@ public class PersueMonsterState : State
     private Vector3 _currentTargetPosition;
     private Monster _monster;
 
-    private void Start()
+    private void OnEnable()
     {
         _monster = GetComponent<Monster>();
+        _monster.LauchStartedMovementEvent();
+    }
+
+    private void OnDisable()
+    {
+        _monster.LaunchStopedMovementEvent();
     }
 
     private void FixedUpdate()

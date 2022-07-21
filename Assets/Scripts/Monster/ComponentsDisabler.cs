@@ -7,7 +7,7 @@ public class ComponentsDisabler : MonoBehaviour
     [SerializeField] private StateMachine _stateMachine;
     [SerializeField] private MinionTargetSystem _targetSystem;
     [SerializeField] private Animator _animator;
-    [SerializeField] private MonsterAnimationController _animationController;
+    [SerializeField] private MonsterAnimationHandler _animationController;
 
     public void DisableComponentsforUi()
     {

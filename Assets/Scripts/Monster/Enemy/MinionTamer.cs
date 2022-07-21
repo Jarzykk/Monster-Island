@@ -5,19 +5,13 @@ using UnityEngine;
 
 public class MinionTamer : MonoBehaviour
 {
-    [SerializeField] private GameObject _minionToTameTemplate;
+    [SerializeField] private Minion _minionToTameTemplate;
     [SerializeField] private Enemy _enemy;
 
     private TamingUiElements _tamingUiElements;
-    private Minion _minionToTame;
 
     private void OnEnable()
     {
-        if (_minionToTameTemplate.TryGetComponent<Minion>(out Minion minion))
-            _minionToTame = minion;
-        else
-            throw new System.Exception("Wrong argument");
-
         _tamingUiElements = FindObjectOfType<TamingUiElements>();
 
         _enemy.Died += OnMinHealthValueReached;
@@ -39,12 +33,12 @@ public class MinionTamer : MonoBehaviour
     private void OnMinHealthValueReached()
     {
         gameObject.transform.parent = null;
-        _tamingUiElements.StartTamingUi(_minionToTame);
+        _tamingUiElements.StartTamingUi(_minionToTameTemplate);
     }
 
     private void Tame()
     {
         MinionsArmy playerMinionsArmy = FindObjectOfType<MinionsArmy>();
-        playerMinionsArmy.AddMinionToArmy(_minionToTame);
+        playerMinionsArmy.AddMinionToArmy(_minionToTameTemplate);
     }
 }

@@ -6,17 +6,15 @@ using UnityEngine.Events;
 public class Health : MonoBehaviour
 {
     [SerializeField] private int _maxHealth;
-    [SerializeField] private HealthBarForScene _healthBar;
 
     private int _currentHealth;
     private bool _isAlive = true;
 
     public int CurrentHealth => _currentHealth;
-    public int MaxValue => _maxHealth;
-    public HealthBarForScene HealthBar => _healthBar;
+    public int MaxHealth => _maxHealth;
 
     public event UnityAction MinValueReached;
-    public event UnityAction<int, int> HealthChanged;
+    public event UnityAction HealthChanged;
 
     private void Start()
     {
@@ -35,7 +33,7 @@ public class Health : MonoBehaviour
             if (_currentHealth > _maxHealth)
                 _currentHealth = _maxHealth;
 
-            HealthChanged?.Invoke(_currentHealth, _maxHealth);
+            HealthChanged?.Invoke();
         }        
     }
 
@@ -44,13 +42,15 @@ public class Health : MonoBehaviour
         if (damage > 0 && _currentHealth > 0)
         {
             _currentHealth -= damage;
-            HealthChanged?.Invoke(_currentHealth, _maxHealth);
+            HealthChanged?.Invoke();
 
             if (_currentHealth <= 0 && _isAlive)
             {
                 _isAlive = false;
                 MinValueReached?.Invoke();
             }
-        }   
+        }
+        else
+            throw new System.Exception("Can't apply damage because min health reached.");
     }
 }

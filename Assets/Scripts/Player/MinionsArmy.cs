@@ -6,7 +6,8 @@ using UnityEngine.Events;
 public class MinionsArmy : MonoBehaviour
 {
     [SerializeField] private Transform _MinionsSpawnPosition;
-    [SerializeField] private GameObject _startingMinionTemplate;
+    [SerializeField] private Minion _startingMinionTemplate;
+    [SerializeField] private Player _player;
 
     private List<Minion> _minions = new List<Minion>();
 
@@ -15,8 +16,7 @@ public class MinionsArmy : MonoBehaviour
 
     private void Start()
     {
-        if (_startingMinionTemplate.TryGetComponent<Minion>(out Minion startingMinion))
-            AddMinionToArmy(startingMinion);
+        AddMinionToArmy(_startingMinionTemplate);
     }
 
     public void AddMinionToArmy(Minion minion)
@@ -34,6 +34,8 @@ public class MinionsArmy : MonoBehaviour
 
     private Minion SpawnMinion(Minion minion)
     {
-        return Instantiate(minion, _MinionsSpawnPosition.position, Quaternion.identity);
+        Minion spawnedMinion = Instantiate(minion, _MinionsSpawnPosition.position, Quaternion.identity);
+        spawnedMinion.Init(_player);
+        return spawnedMinion;
     }
 }

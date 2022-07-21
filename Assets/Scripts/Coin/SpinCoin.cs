@@ -6,6 +6,7 @@ using UnityEngine;
 public class SpinCoin : MonoBehaviour
 {
     [SerializeField] private float _rotateSpeedByYAngle;
+
     private Coin _coin;
 
     private void Start()

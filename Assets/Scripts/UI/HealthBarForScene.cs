@@ -36,9 +36,9 @@ public class HealthBarForScene : MonoBehaviour
         Health.MinValueReached -= DeactivateHealthBar;
     }
 
-    public void OnValueChanged(int value, int maxValue)
+    public void OnValueChanged()
     {
-        _slider.value = (float)value / maxValue;
+        _slider.value = (float)_health.CurrentHealth / _health.MaxHealth;
     }
 
     public void OnBattleStateActivated()

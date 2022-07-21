@@ -34,7 +34,7 @@ public class FillingHeart : MonoBehaviour
         {
             _fillingImage.fillAmount = Mathf.Lerp(_startFillAmount, _targetFillAmount, timeCount / _duration);
             timeCount += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
 
         HeartFilled?.Invoke();

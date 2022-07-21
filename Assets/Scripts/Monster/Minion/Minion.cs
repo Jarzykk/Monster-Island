@@ -7,14 +7,15 @@ public class Minion : Monster
 {
     [SerializeField] private string _minonsTypeName;
     [SerializeField] private ComponentsDisabler _disabler;
+
     private Player _player;
 
     public Player Player => _player;
     public string MinionsTypeName => _minonsTypeName;
 
-    private void Start()
+    public void Init(Player player)
     {
-        _player = FindObjectOfType<Player>();
+        _player = player;
     }
 
     public void DisableComponentsForUI()

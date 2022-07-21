@@ -16,9 +16,9 @@ public class HealthBar : MonoBehaviour
         _health.MinValueReached += OnDeath;
     }
 
-    private void OnHealthChanged(int value, int maxValue)
+    private void OnHealthChanged()
     {
-        _healthBarSlider.value = (float)value / maxValue;
+        _healthBarSlider.value = (float)_health.CurrentHealth / _health.MaxHealth; ;
     }
 
     private void OnDeath()

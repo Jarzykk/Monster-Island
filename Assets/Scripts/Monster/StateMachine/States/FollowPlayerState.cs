@@ -13,10 +13,20 @@ public class FollowPlayerState : State
 
     private float _xAxisError;
 
+    private void OnEnable()
+    {
+        _minion = GetComponent<Minion>();
+        _minion.LauchStartedMovementEvent();
+    }
+
+    private void OnDisable()
+    {
+        _minion.LaunchStopedMovementEvent();
+    }
+
     private void Start()
     {
-        _xAxisError = Random.Range(- _accesibleXAxisErrorToTargetPosition, _accesibleXAxisErrorToTargetPosition);
-        _minion = GetComponent<Minion>();
+        _xAxisError = Random.Range(- _accesibleXAxisErrorToTargetPosition, _accesibleXAxisErrorToTargetPosition);        
     }
 
     private void FixedUpdate()

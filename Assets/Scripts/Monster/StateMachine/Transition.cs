@@ -12,6 +12,11 @@ public abstract class Transition : MonoBehaviour
 
     private void OnEnable()
     {
+        Enabled();
+    }
+
+    protected virtual void Enabled()
+    {
         NeedTransit = false;
     }
 }

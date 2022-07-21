@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MinionsArmyPanel : MonoBehaviour
 {
-    [SerializeField] private GameObject _minionsTabTemplate;
+    [SerializeField] private MinionsTab _minionsTabTemplate;
     [SerializeField] private MinionsArmy _minionsArmy;
     [SerializeField] private int _minionsAmountToVisualizeTabs;
 
@@ -43,8 +43,7 @@ public class MinionsArmyPanel : MonoBehaviour
 
     private void AddNewMinionsTab(Minion minion)
     {
-        GameObject instantiated = Instantiate(_minionsTabTemplate, transform);
-        MinionsTab minionsTab = instantiated.GetComponent<MinionsTab>();
+        MinionsTab minionsTab = Instantiate(_minionsTabTemplate, transform);
         minionsTab.InstantiateMinion(minion);
         minionsTab.SetHealth(minion.GetComponent<Health>());
         _tabs.Add(minionsTab);
